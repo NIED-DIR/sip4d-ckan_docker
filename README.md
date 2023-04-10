@@ -8,6 +8,7 @@
 ハーベスターはcrondで５分毎に起動しています。起動間隔を変更する場合は、ckan/setup/cron_ckanを修正してください。
 
 -----
+以下フォーク元のREADME
 # Docker Compose setup for CKAN
 
 
