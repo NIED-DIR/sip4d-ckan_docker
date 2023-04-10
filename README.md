@@ -5,9 +5,9 @@
 - [ckanext-spatial](https://github.com/ckan/ckanext-spatial):v2.0.0
 - [ckanext-sip4d](https://hithub.com/NIED-DIR/ckanext-sip4d):v0.4
 
-ハーベスターはcrondで５分毎に起動しています。起動間隔を変更する場合は、ckan/setup/cron_ckanを修正してください。
+ハーベスターはcrondで５分毎に起動しています。起動間隔を変更する場合は、ckan/setup/cron_ckanを修正してください。  
+以下フォーク元のREADMEです。
 
-以下フォーク元のREADME
 -----
 # Docker Compose setup for CKAN
 
