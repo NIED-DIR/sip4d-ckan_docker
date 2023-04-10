@@ -1,0 +1,3 @@
+*/5   *    *    *    *     ckan -c /srv/app/ckan.ini harvester run
+# 0   *    *    *    *     ckan -c /srv/app/ckan.ini harvester run
+# 0   3    *    *    *     ckan -c /srv/app/ckan.ini harvester clearsource-history SOURCE_ID
