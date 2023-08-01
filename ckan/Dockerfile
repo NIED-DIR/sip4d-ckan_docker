@@ -32,10 +32,10 @@ RUN pip3 install -e 'git+https://github.com/ckan/ckanext-harvest.git@v1.5.3#egg=
     pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt
 COPY setup/ckan_harvesting.conf /etc/supervisord.d/ckan_harvesting.conf
 
-#pyprojをインストールするために必要
+#pyprojをインストールする(pyprojの3.xはproj9.0以上なのでprojをソースからインストール)
 RUN apk add gcc g++ cmake geos-dev sqlite sqlite-dev curl-dev &&\
     export SQLITE3_VERSION=3.36.0
-#libTiffをソースからインストールする
+#libTiffをソースからインストールする（projに必要）
 WORKDIR /root
 RUN wget http://download.osgeo.org/libtiff/tiff-4.5.1rc3.tar.gz
 RUN tar zxvf tiff-4.5.1rc3.tar.gz
@@ -45,19 +45,20 @@ RUN make
 RUN make install
 #projをソースからインストールする
 WORKDIR /root
-RUN wget https://download.osgeo.org/proj/proj-9.2.1.tar.gz
-RUN tar zxvf proj-9.2.1.tar.gz
+RUN wget https://download.osgeo.org/proj/proj-9.2.1.tar.gz &&\
+    tar zxvf proj-9.2.1.tar.gz
 WORKDIR /root/proj-9.2.1/build
-RUN cmake ..
-RUN cmake --build .
-RUN cmake --build . --target install
+RUN cmake .. &&\
+    cmake --build . &&\
+    cmake --build . --target install
 ENV PROJ_DIR=/usr/local
-#pyprojをインストールする
+#pyprojをGithubからインストールする（3.6.1dev0をいまのところ使用)
 WORKDIR ${APP_DIR}
 RUN pip install git+https://github.com/pyproj4/pyproj.git
 
 ### Spatial ###
 RUN pip3 install -e 'git+https://github.com/ckan/ckanext-spatial.git@v2.0.0#egg=ckanext-spatial'
+#pyprojのインストールでエラーが出るので、標準のrequirements.txtを使わずにインストールする
 COPY setup/spatial-requirements.txt ${APP_DIR}/src/ckanext-spatial/requirements.txt
 RUN pip3 install -r ${APP_DIR}/src/ckanext-spatial/requirements.txt
 
