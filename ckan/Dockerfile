@@ -52,9 +52,9 @@ RUN cmake .. &&\
     cmake --build . &&\
     cmake --build . --target install
 ENV PROJ_DIR=/usr/local
-#pyprojをGithubからインストールする（3.6.1dev0をいまのところ使用)
+#pyprojをGithubからインストールする
 WORKDIR ${APP_DIR}
-RUN pip install git+https://github.com/pyproj4/pyproj.git
+RUN pip install git+https://github.com/pyproj4/pyproj.git@3.6.1
 
 ### Spatial ###
 RUN pip3 install -e 'git+https://github.com/ckan/ckanext-spatial.git@v2.0.0#egg=ckanext-spatial'
