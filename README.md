@@ -5,10 +5,12 @@
 - [ckanext-spatial](https://github.com/ckan/ckanext-spatial)
 - [ckanext-sip4d](https://hithub.com/NIED-DIR/ckanext-sip4d)
 
-ハーベスターはcrondで５分毎に起動しています。起動間隔を変更する場合は、ckan/setup/cron_ckanを修正してください。
-```
-crontab -e -u ckan
-```
+
+ハーベスターはcrondで５分毎に起動しています。起動間隔を変更する場合は、crontabで修正してください。
+```bash
+$ crontab -e -u ckan
+```  
+
 以下フォーク元のREADMEです。
 
 -----

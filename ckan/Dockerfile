@@ -12,7 +12,8 @@ RUN if ! [ /usr/share/zoneinfo/${TZ} -ef /etc/localtime ]; then \
 
 # cron 
 RUN apk add dcron
-COPY setup/cron_ckan /etc/crontabs/ckan
+#ハーベスターを5分ごとに実行するように設定
+RUN echo "*/5 * * * * ckan -c /srv/app/ckan.ini harvester run" > /etc/crontabs/ckan
 
 # ckan.iniファイルの更新
 COPY setup/ckan.ini ${APP_DIR}/ckan.ini
@@ -63,7 +64,7 @@ COPY setup/spatial-requirements.txt ${APP_DIR}/src/ckanext-spatial/requirements.
 RUN pip3 install -r ${APP_DIR}/src/ckanext-spatial/requirements.txt
 
 ### sip4d ###
-RUN pip3 install -e 'git+https://github.com/NIED-DIR/ckanext-sip4d.git#egg=ckanext-sip4d'
+RUN pip3 install -e 'git+https://github.com/NIED-DIR/ckanext-sip4d.git@v1.0#egg=ckanext-sip4d'
 RUN pip3 install -r ${APP_DIR}/src/ckanext-sip4d/requirements.txt
 
 COPY docker-entrypoint.d/* /docker-entrypoint.d/
