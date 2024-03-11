@@ -1,4 +1,4 @@
-FROM ckan/ckan-base:2.9.9
+FROM ckan/ckan-base:2.9.10
 
 # Set up environment variables
 ENV APP_DIR=/srv/app
@@ -38,7 +38,7 @@ RUN apk add gcc g++ cmake geos-dev sqlite sqlite-dev curl-dev
 ENV SQLITE3_VERSION=3.36.0
 #libTiffをソースからインストールする（projに必要）
 WORKDIR /root
-RUN wget http://download.osgeo.org/libtiff/tiff-4.5.1rc3.tar.gz &&\
+RUN wget https://download.osgeo.org/libtiff/tiff-4.5.1rc3.tar.gz &&\
     tar zxvf tiff-4.5.1rc3.tar.gz
 WORKDIR /root/tiff-4.5.1
 RUN ./configure &&\
