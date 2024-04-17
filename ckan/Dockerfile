@@ -15,11 +15,6 @@ RUN apk add dcron
 #ハーベスターを5分ごとに実行するように設定
 RUN echo "*/5 * * * * ckan -c /srv/app/ckan.ini harvester run" > /etc/crontabs/ckan
 
-# ckan.iniファイルの更新
-COPY setup/ckan.ini ${APP_DIR}/ckan.ini
-RUN chown ckan ${APP_DIR}/ckan.ini && \
-    chmod 644 ${APP_DIR}/ckan.ini
-
 #「組織」を「データフォルダ」に変更する
 # Organizations=組織の日本語訳では誤解がうまれやすいのでSIP4D-CKANではデータフォルダと訳す
 RUN cp ${APP_DIR}/src/ckan/ckan/i18n/ja/LC_MESSAGES/ckan.po ${APP_DIR}/src/ckan/ckan/i18n/ja/LC_MESSAGES/ckan.po.org
