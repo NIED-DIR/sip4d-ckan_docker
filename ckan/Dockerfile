@@ -59,7 +59,7 @@ COPY setup/spatial-requirements.txt ${APP_DIR}/src/ckanext-spatial/requirements.
 RUN pip3 install -r ${APP_DIR}/src/ckanext-spatial/requirements.txt
 
 ### sip4d ###
-RUN pip3 install -e 'git+https://github.com/NIED-DIR/ckanext-sip4d.git@v1.0#egg=ckanext-sip4d'
+RUN pip3 install -e 'git+https://github.com/NIED-DIR/ckanext-sip4d.git@v1.1#egg=ckanext-sip4d'
 RUN pip3 install -r ${APP_DIR}/src/ckanext-sip4d/requirements.txt
 
 COPY docker-entrypoint.d/* /docker-entrypoint.d/

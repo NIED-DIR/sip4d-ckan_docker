@@ -15,7 +15,7 @@ services:
       dockerfile: Dockerfile
     depends_on:
       ckan:
-        condition: service_healthy
+        condition: service_started
     ports:
       - "0.0.0.0:${NGINX_PORT_HOST}:${NGINX_PORT}"
       - "0.0.0.0:${NGINX_SSLPORT_HOST}:${NGINX_SSLPORT}"
