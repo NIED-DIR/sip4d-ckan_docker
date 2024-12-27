@@ -4,6 +4,7 @@ volumes:
   solr_data:
   pip_cache:
   site_packages:
+  redis_data:
   local_bin:
   home_dir:
 
@@ -66,7 +67,8 @@ services:
       test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
      
   solr:
-    image: ckan/ckan-solr:${SOLR_IMAGE_VERSION}
+    build:
+      context: solr/
     volumes:
       - solr_data:/var/solr
     restart: unless-stopped
@@ -75,6 +77,8 @@ services:
 
   redis:
     image: redis:${REDIS_VERSION}
+    volumes:
+      - redis_data:/data
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "redis-cli", "-e", "QUIT"]

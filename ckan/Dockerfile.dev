@@ -1,47 +1,33 @@
 FROM ckan/ckan-dev:2.11
-
-# Install any extensions needed by your CKAN instance
-# - Make sure to add the plugins to CKAN__PLUGINS in the .env file
-# - Also make sure all provide all extra configuration options, either by:
-#   * Adding them to the .env file (check the ckanext-envvars syntax for env vars), or
-#   * Adding extra configuration scripts to /docker-entrypoint.d folder) to update
-#      the CKAN config file (ckan.ini) with the `ckan config-tool` command
-#
-# See README > Extending the base images for more details
-#
-# For instance:
-#
-### XLoader ###
-#RUN pip3 install -e 'git+https://github.com/ckan/ckanext-xloader.git@master#egg=ckanext-xloader' && \ 
-#    pip3 install -r ${APP_DIR}/src/ckanext-xloader/requirements.txt && \
-#    pip3 install -U requests[security]
-
-### Harvester ###
-#RUN pip3 install -e 'git+https://github.com/ckan/ckanext-harvest.git@master#egg=ckanext-harvest' && \
-#    pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt
-# will also require gather_consumer and fetch_consumer processes running (please see https://github.com/ckan/ckanext-harvest)
-
-### Scheming ###
-#RUN  pip3 install -e 'git+https://github.com/ckan/ckanext-scheming.git@master#egg=ckanext-scheming'
-
-### Pages ###
-#RUN  pip3 install -e git+https://github.com/ckan/ckanext-pages.git#egg=ckanext-pages
-
-### DCAT ###
-#RUN  pip3 install -e git+https://github.com/ckan/ckanext-dcat.git@v0.0.6#egg=ckanext-dcat && \
-#     pip3 install -r https://raw.githubusercontent.com/ckan/ckanext-dcat/v0.0.6/requirements.txt
-
-# Clone the extension(s) your are writing for your own project in the `src` folder
-# to get them mounted in this image at runtime
-
+USER root
+RUN apt-get update && apt-get install -y rsyslog supervisor cron
+RUN sed -i '/imklog/s/^/#/' /etc/rsyslog.conf
+RUN echo $TZ > /etc/timezone
 # Copy custom initialization scripts
 COPY --chown=ckan-sys:ckan-sys docker-entrypoint.d/* /docker-entrypoint.d/
+COPY --chown=ckan-sys:ckan-sys setup/start_ckan.sh.override ${APP_DIR}/start_ckan.sh
+COPY --chown=ckan-sys:ckan-sys setup/ckan_harvesting.conf /etc/supervisor/conf.d/ckan_harvesting.conf
+#ハーベスターを5分ごとに実行するように設定
+RUN echo "*/5 * * * * ckan --config=/srv/app/ckan.ini harvester run" > /var/spool/cron/crontabs/ckan
+RUN chown ckan:crontab /var/spool/cron/crontabs/ckan
+RUN chmod 600 /var/spool/cron/crontabs/ckan
 
-# Apply any patches needed to CKAN core or any of the built extensions (not the
-# runtime mounted ones)
+### Harvester ###
+RUN pip3 install -e 'git+https://github.com/ckan/ckanext-harvest.git@v1.6.0#egg=ckanext-harvest' && \
+    pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt
+
+### Spatial ###
+RUN pip3 install -e 'git+https://github.com/ckan/ckanext-spatial.git@v2.2.0#egg=ckanext-spatial' && \
+    pip3 install -r ${APP_DIR}/src/ckanext-spatial/requirements.txt
+
+### SIP4D ###
+RUN pip3 install -e 'git+https://github.com/NIED-DIR/ckanext-sip4d.git@v1.1#egg=ckanext-sip4d' && \
+    pip3 install -r ${APP_DIR}/src/ckanext-sip4d/requirements.txt
+
+
 COPY --chown=ckan-sys:ckan-sys patches ${APP_DIR}/patches
 
-USER ckan
+#USER ckan
 
 RUN for d in $APP_DIR/patches/*; do \
         if [ -d $d ]; then \
