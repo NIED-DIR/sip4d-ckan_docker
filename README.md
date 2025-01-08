@@ -1,15 +1,21 @@
 # Docker Compose setup for SIP4D-CKAN
 
-オフィシャルCKAN [ckan-docker](https://github.com/ckan/ckan-docker)をベースにしています。追加しているモジュールは以下です。 
-- [ckan v2.11](https://github.com/ckan/ckan) 
+オフィシャルCKAN [ckan-docker](https://github.com/ckan/ckan-docker)をベースにしています。CKAN_baseおよび追加しているモジュールは以下です。 
+- [ckan v2.11.1](https://github.com/ckan/ckan) 
 - [ckanext-harvest v1.6.0](https://github.com/ckan/ckanext-harvest)
 - [ckanext-spatial v2.2.0](https://github.com/ckan/ckanext-spatial)
 - [ckanext-sip4d v1.1](https://hithub.com/NIED-DIR/ckanext-sip4d)
 
 
-ハーベスターはcrondで５分毎に起動しています。起動間隔を変更する場合は、crontabで修正してください。
+ハーベスターはckan_harvester_run.shで５分毎に起動しています。起動間隔を変更する場合は、ckan_harvester_run.sh修正してください。
 ```bash
-$ crontab -e -u ckan
+#!/bin/sh
+# 5分に1回harvester runを実行する
+while true 
+do
+    ckan --config=/srv/app/ckan.ini harvester run
+    sleep 300
+done
 ```  
 
 以下フォーク元のREADMEです。
