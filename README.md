@@ -7,7 +7,7 @@
 - [ckanext-sip4d v1.1](https://hithub.com/NIED-DIR/ckanext-sip4d)
 
 
-ハーベスターはckan_harvester_run.shで５分毎に起動しています。起動間隔を変更する場合は、ckan_harvester_run.sh修正してください。
+ハーベスターはckan_harvester_run.shで５分毎に起動しています。起動間隔を変更する場合は、ckan_harvester_run.shを修正してください。
 ```bash
 #!/bin/sh
 # 5分に1回harvester runを実行する
