@@ -1,16 +1,13 @@
-FROM ckan/ckan-base:2.11
+FROM ckan/ckan-base:2.11.1
 USER root
-RUN apt-get update && apt-get install -y rsyslog supervisor cron
-RUN sed -i '/imklog/s/^/#/' /etc/rsyslog.conf
+RUN apt-get update && apt-get install -y supervisor
 RUN echo $TZ > /etc/timezone
 # Copy custom initialization scripts
 COPY --chown=ckan-sys:ckan-sys docker-entrypoint.d/* /docker-entrypoint.d/
 COPY --chown=ckan-sys:ckan-sys setup/start_ckan.sh.override ${APP_DIR}/start_ckan.sh
 COPY --chown=ckan-sys:ckan-sys setup/ckan_harvesting.conf /etc/supervisor/conf.d/ckan_harvesting.conf
-#ハーベスターを5分ごとに実行するように設定
-RUN echo "*/5 * * * * ckan --config=/srv/app/ckan.ini harvester run" > /var/spool/cron/crontabs/root
-RUN chown root:crontab /var/spool/cron/crontabs/root
-RUN chmod 600 /var/spool/cron/crontabs/root
+# ハーベスターを5分ごとに実行する(ckan_harvest_run.shはsupervisorで実行される)
+COPY --chown=ckan:ckan-sys setup/ckan_harvester_run.sh ${APP_DIR}/ckan_harvester_run.sh
 
 ### Harvester ###
 RUN pip3 install -e 'git+https://github.com/ckan/ckanext-harvest.git@v1.6.0#egg=ckanext-harvest' && \
@@ -24,9 +21,17 @@ RUN pip3 install -e 'git+https://github.com/ckan/ckanext-spatial.git@v2.2.0#egg=
 RUN pip3 install -e 'git+https://github.com/NIED-DIR/ckanext-sip4d.git@v1.1#egg=ckanext-sip4d' && \
     pip3 install -r ${APP_DIR}/src/ckanext-sip4d/requirements.txt
 
+    #「組織」を「データフォルダ」に変更する
+# Organizations=組織の日本語訳では誤解がうまれやすいのでSIP4D-CKANではデータフォルダと訳す
+RUN cp ${APP_DIR}/src/ckan/ckan/i18n/ja/LC_MESSAGES/ckan.po ${APP_DIR}/src/ckan/ckan/i18n/ja/LC_MESSAGES/ckan.po.org
+RUN sed -i -e "s/組織/データフォルダ/" ${APP_DIR}/src/ckan/ckan/i18n/ja/LC_MESSAGES/ckan.po
+RUN cd ${APP_DIR}/src/ckan && \
+    python3 setup.py compile_catalog -f --locale ja && \
+    python3 setup.py develop
+
 COPY --chown=ckan-sys:ckan-sys patches ${APP_DIR}/patches
 
-#USER ckan
+#USER ckan  # supervisor起動のためコメントアウト　supervisorの起動はstart_ckan.sh.overrideで定義
 
 RUN for d in $APP_DIR/patches/*; do \
         if [ -d $d ]; then \

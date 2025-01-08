@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # CKANの設定
 ckan config-tool $CKAN_INI "ckan.site_title = SIP4D-CKAN"
@@ -15,7 +15,7 @@ ckan config-tool $CKAN_INI "ckan.locales_filtered_out = en_GB"
 # ckanext-spatialの設定
 ckan config-tool $CKAN_INI "ckan.spatial.srid = 4326"
 ckan config-tool $CKAN_INI "ckan.spatial.default_map_extent = 123.135,23.24,157.76,51.51"
-ckan config-tool $CKAN_INI "ckanext.spatial.search_backend = solr"
+ckan config-tool $CKAN_INI "ckanext.spatial.search_backend = solr-bbox"
 ckan config-tool $CKAN_INI "ckanext.spatial.common_map.type = custom"
 ckan config-tool $CKAN_INI "ckanext.spatial.common_map.custom.url = https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png"
 ckan config-tool $CKAN_INI "ckanext.spatial.common_map.attribution = Map tiles by <a href=\"https://www.gsi.go.jp\" target=\"_blank\">GSI</a>"
