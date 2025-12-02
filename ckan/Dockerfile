@@ -1,4 +1,4 @@
-FROM ckan/ckan-base:2.11.1
+FROM ckan/ckan-base:2.11.3
 USER root
 RUN apt-get update && apt-get install -y supervisor
 RUN echo $TZ > /etc/timezone
@@ -8,13 +8,14 @@ COPY --chown=ckan-sys:ckan-sys setup/start_ckan.sh.override ${APP_DIR}/start_cka
 COPY --chown=ckan-sys:ckan-sys setup/ckan_harvesting.conf /etc/supervisor/conf.d/ckan_harvesting.conf
 # ハーベスターを5分ごとに実行する(ckan_harvest_run.shはsupervisorで実行される)
 COPY --chown=ckan:ckan-sys setup/ckan_harvester_run.sh ${APP_DIR}/ckan_harvester_run.sh
+RUN chmod +x ${APP_DIR}/ckan_harvester_run.sh
 
 ### Harvester ###
-RUN pip3 install -e 'git+https://github.com/ckan/ckanext-harvest.git@v1.6.0#egg=ckanext-harvest' && \
+RUN pip3 install -e 'git+https://github.com/ckan/ckanext-harvest.git@v1.6.1#egg=ckanext-harvest' && \
     pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt
 
 ### Spatial ###
-RUN pip3 install -e 'git+https://github.com/ckan/ckanext-spatial.git@v2.2.0#egg=ckanext-spatial' && \
+RUN pip3 install -e 'git+https://github.com/ckan/ckanext-spatial.git@v2.3.1#egg=ckanext-spatial' && \
     pip3 install -r ${APP_DIR}/src/ckanext-spatial/requirements.txt
 
 ### SIP4D ###
