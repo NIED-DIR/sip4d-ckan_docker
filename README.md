@@ -1,9 +1,9 @@
 # Docker Compose setup for SIP4D-CKAN
 
 オフィシャルCKAN [ckan-docker](https://github.com/ckan/ckan-docker)をベースにしています。CKAN_baseおよび追加しているモジュールは以下です。 
-- [ckan v2.11.1](https://github.com/ckan/ckan) 
-- [ckanext-harvest v1.6.0](https://github.com/ckan/ckanext-harvest)
-- [ckanext-spatial v2.2.0](https://github.com/ckan/ckanext-spatial)
+- [ckan v2.11.3](https://github.com/ckan/ckan) 
+- [ckanext-harvest v1.6.1](https://github.com/ckan/ckanext-harvest)
+- [ckanext-spatial v2.3.1](https://github.com/ckan/ckanext-spatial)
 - [ckanext-sip4d v1.1](https://hithub.com/NIED-DIR/ckanext-sip4d)
 
 
