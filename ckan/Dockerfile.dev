@@ -21,6 +21,10 @@ RUN pip3 install -e 'git+https://github.com/ckan/ckanext-spatial.git@v2.3.1#egg=
 RUN pip3 install -e 'git+https://github.com/NIED-DIR/ckanext-sip4d.git@v1.1#egg=ckanext-sip4d' && \
     pip3 install -r ${APP_DIR}/src/ckanext-sip4d/requirements.txt
 
+### Keycloak ###
+RUN pip3 install -e 'git+https://github.com/NIED-DIR/ckanext-keycloak.git@v0.1.0#egg=ckanext-keycloak' && \
+    pip3 install -r ${APP_DIR}/src/ckanext-keycloak/requirements.txt
+
     #「組織」を「データフォルダ」に変更する
 # Organizations=組織の日本語訳では誤解がうまれやすいのでSIP4D-CKANではデータフォルダと訳す
 RUN cp ${APP_DIR}/src/ckan/ckan/i18n/ja/LC_MESSAGES/ckan.po ${APP_DIR}/src/ckan/ckan/i18n/ja/LC_MESSAGES/ckan.po.org
