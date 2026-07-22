@@ -23,7 +23,7 @@ RUN pip3 install -e 'git+https://github.com/NIED-DIR/ckanext-sip4d.git@v1.1#egg=
     pip3 install -r ${APP_DIR}/src/ckanext-sip4d/requirements.txt
 
 ### Keycloak ###
-RUN pip3 install -e 'git+https://github.com/NIED-DIR/ckanext-keycloak.git@v0.1.0#egg=ckanext-keycloak' && \
+RUN pip3 install -e 'git+https://github.com/NIED-DIR/ckanext-keycloak.git@v0.1.1#egg=ckanext-keycloak' && \
     pip3 install -r ${APP_DIR}/src/ckanext-keycloak/requirements.txt
 
     #「組織」を「データフォルダ」に変更する
