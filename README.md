@@ -4,7 +4,7 @@
 - [ckan v2.11.3](https://github.com/ckan/ckan) 
 - [ckanext-harvest v1.6.1](https://github.com/ckan/ckanext-harvest)
 - [ckanext-spatial v2.3.1](https://github.com/ckan/ckanext-spatial)
-- [ckanext-sip4d v1.1](https://hithub.com/NIED-DIR/ckanext-sip4d)
+- [ckanext-sip4d v1.2](https://hithub.com/NIED-DIR/ckanext-sip4d)
 - [ckanext-keycloak v0.1.0](https://github.com/NIED-DIR/ckanext-keycloak)
 
 
