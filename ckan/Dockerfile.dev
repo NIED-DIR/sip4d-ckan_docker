@@ -18,7 +18,7 @@ RUN pip3 install -e 'git+https://github.com/ckan/ckanext-spatial.git@v2.3.1#egg=
     pip3 install -r ${APP_DIR}/src/ckanext-spatial/requirements.txt
 
 ### SIP4D ###
-RUN pip3 install -e 'git+https://github.com/NIED-DIR/ckanext-sip4d.git@v1.1#egg=ckanext-sip4d' && \
+RUN pip3 install -e 'git+https://github.com/NIED-DIR/ckanext-sip4d.git@v1.2#egg=ckanext-sip4d' && \
     pip3 install -r ${APP_DIR}/src/ckanext-sip4d/requirements.txt
 
 ### Keycloak ###
